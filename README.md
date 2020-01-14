@@ -1,4 +1,4 @@
-DS_project_3#include <iostream>
+#include <iostream>
 #include <stdlib.h>
 #include <time.h>
 #include "../include/algorithm.h"
@@ -27,54 +27,77 @@ using namespace std;
 
 
 struct block{
-    int explose;
-    int safe;
-    bool mine;
-    int num_orbs;
+    int priority;
     int pos_x;
     int pos_y;
 };
 
 void algorithm_A(Board board, Player player, int index[]){
-
-    // cout << board.get_capacity(0, 0) << endl;
-    // cout << board.get_orbs_num(0, 0) << endl;
-    // cout << board.get_cell_color(0, 0) << endl;
-    // board.print_current_board(0, 0, 0);
-
-    //////////// Random Algorithm ////////////
-    // Here is the random algorithm for your reference, you can delete or comment it.
-    /*srand(time(NULL));
-    int row, col;
-    int color = player.get_color();
-
-    while(1){
-        row = rand() % 5;
-        col = rand() % 6;
-        if(board.get_cell_color(row, col) == color || board.get_cell_color(row, col) == 'w') break;
-    }
-
-    index[0] = row;
-    index[1] = col;*/
-    int row, col;
     char color = player.get_color();
     block B[5][6];
 
     for(int i = 0; i < 5; i++){
         for(int j = 0; j < 6; j++){
+            B[i][j].priority = 0;
+            if(color == board.get_cell_color(i, j) || board.get_cell_color(i, j) == 'w'){}
+            else{
+                B[i][j].priority = -1;
+            }
             B[i][j].pos_x = i;
             B[i][j].pos_y = j;
-            B[i][j].num_orbs = board.get_orbs_num(i, j);
-            B[i][j].explose = board.get_capacity(i, j) - B[i][j].num_orbs;
-
-            if(color == board.get_cell_color(i, j) || board.get_cell_color(i, j) == 'w'){
-                B[i][j].mine = true;
-            }
-            else{
-                B[i][j].mine = false;
-            }
-
         }
     }
-}
 
+    for(int i = 0; i < 5; i++){
+        for(int j = 0; j < 6; j++){
+            if(color == board.get_cell_color(i, j) || board.get_cell_color(i, j) == 'w'){
+                    B[i][j].priority = 5-board.get_capacity(i, j)+board.get_orbs_num(i, j);
+            }
+            else{
+                B[i][j].priority = -1;
+            }
+        }
+    }
+    for(int i = 0; i < 5; i ++){
+        for(int j = 0; j < 6; j++){
+            cout<<B[i][j].priority<<" ";
+        }
+        cout<<endl;
+    }
+    int top = 0;
+    int same = 1;
+    for(int i = 0; i < 5; i++){
+        for(int j = 0; j < 6; j++){
+            if(B[i][j].priority > top){
+                top = B[i][j].priority;
+                same = 1;
+                cout<<"top = "<<top<<endl;
+            }
+            else if(B[i][j].priority == top){
+                same += 1;
+                cout<<"i = "<<i<<" j = "<<j<<endl;
+            }
+        }
+    }
+    cout<<"same = "<<same<<endl;
+    block Max[same];
+    int k = 0;
+    for(int i = 0; i < 5; i++){
+        for(int j = 0; j < 6; j++){
+            if(B[i][j].priority == top){
+                Max[k] = B[i][j];
+                k+=1;
+            }
+        }
+    }
+    for(int i = 0; i < same; i++){
+        cout<<"("<<Max[i].pos_x<<" "<<Max[i].pos_y<<")"<<endl;
+    }
+    block Final;
+    srand(time(NULL)*time(NULL));
+    int Rand = rand()%same;
+    Final = Max[Rand];
+    index[0] = Final.pos_x;
+    index[1] = Final.pos_y;
+    return;
+}
