@@ -52,10 +52,16 @@ void algorithm_A(Board board, Player player, int index[]){
         for(int j = 0; j < 6; j++){
             if(color == board.get_cell_color(i, j) || board.get_cell_color(i, j) == 'w'){
                     B[i][j].priority = 5-board.get_capacity(i, j)+board.get_orbs_num(i, j);
-                    if(i-1 >= 0){
+                    if(i-1 >= 0 && B[i][j].priority > 0){
                         if(board.get_cell_color(i-1, j) != color && board.get_cell_color(i-1, j) != 'w'){
                             if(board.get_capacity(i, j)-board.get_orbs_num(i, j) <= board.get_capacity(i-1, j)-board.get_orbs_num(i-1, j)){
                                 B[i][j].priority += 10;
+                            }
+                            if(board.get_capacity(i-1, j)-board.get_orbs_num(i-1, j) == 1){
+                                B[i][j].priority = 0;
+                            }
+                            if(board.get_capacity(i, j)-board.get_orbs_num(i, j)==1){
+                                B[i][j].priority += 100;
                             }
                         }
                         else if(board.get_cell_color(i-1, j) == color){
@@ -64,14 +70,56 @@ void algorithm_A(Board board, Player player, int index[]){
                             }
                         }
                     }
-                    if(i+1 < 5){
+                    if(i+1 < 5 && B[i][j].priority > 0){
                         if(board.get_cell_color(i+1, j) != color && board.get_cell_color(i+1, j) != 'w'){
                             if(board.get_capacity(i, j)-board.get_orbs_num(i, j) <= board.get_capacity(i+1, j)-board.get_orbs_num(i+1, j)){
                                 B[i][j].priority += 10;
                             }
+                            if(board.get_capacity(i+1, j)-board.get_orbs_num(i+1, j) == 1){
+                                B[i][j].priority = 0;
+                            }
+                            if(board.get_capacity(i, j)-board.get_orbs_num(i, j)==1){
+                                B[i][j].priority += 100;
+                            }
                         }
                         else if(board.get_cell_color(i+1, j) == color){
                             if(board.get_capacity(i, j)-board.get_orbs_num(i, j) <= board.get_capacity(i+1, j)-board.get_orbs_num(i+1, j)){
+                                B[i][j].priority += 3;
+                            }
+                        }
+                    }
+                    if(j-1 >= 0 && B[i][j].priority > 0){
+                        if(board.get_cell_color(i, j-1) != color && board.get_cell_color(i, j-1) != 'w'){
+                            if(board.get_capacity(i, j)-board.get_orbs_num(i, j) <= board.get_capacity(i, j-1)-board.get_orbs_num(i, j-1)){
+                                B[i][j].priority += 10;
+                            }
+                            if(board.get_capacity(i, j-1)-board.get_orbs_num(i, j-1) == 1){
+                                B[i][j].priority = 0;
+                            }
+                            if(board.get_capacity(i, j)-board.get_orbs_num(i, j)==1){
+                                B[i][j].priority += 100;
+                            }
+                        }
+                        else if(board.get_cell_color(i, j-1) == color){
+                            if(board.get_capacity(i, j)-board.get_orbs_num(i, j) <= board.get_capacity(i, j-1)-board.get_orbs_num(i, j-1)){
+                                B[i][j].priority += 3;
+                            }
+                        }
+                    }
+                    if(j+1 < 6 && B[i][j].priority > 0){
+                        if(board.get_cell_color(i, j+1) != color && board.get_cell_color(i, j+1) != 'w'){
+                            if(board.get_capacity(i, j)-board.get_orbs_num(i, j) <= board.get_capacity(i, j+1)-board.get_orbs_num(i, j+1)){
+                                B[i][j].priority += 10;
+                            }
+                            if(board.get_capacity(i, j+1)-board.get_orbs_num(i, j+1) == 1){
+                                B[i][j].priority = 0;
+                            }
+                            if(board.get_capacity(i, j)-board.get_orbs_num(i, j)==1){
+                                B[i][j].priority += 100;
+                            }
+                        }
+                        else if(board.get_cell_color(i, j+1) == color){
+                            if(board.get_capacity(i, j)-board.get_orbs_num(i, j) <= board.get_capacity(i, j+1)-board.get_orbs_num(i, j+1)){
                                 B[i][j].priority += 3;
                             }
                         }
