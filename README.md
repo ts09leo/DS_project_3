@@ -52,12 +52,37 @@ void algorithm_A(Board board, Player player, int index[]){
         for(int j = 0; j < 6; j++){
             if(color == board.get_cell_color(i, j) || board.get_cell_color(i, j) == 'w'){
                     B[i][j].priority = 5-board.get_capacity(i, j)+board.get_orbs_num(i, j);
+                    if(i-1 >= 0){
+                        if(board.get_cell_color(i-1, j) != color && board.get_cell_color(i-1, j) != 'w'){
+                            if(board.get_capacity(i, j)-board.get_orbs_num(i, j) <= board.get_capacity(i-1, j)-board.get_orbs_num(i-1, j)){
+                                B[i][j].priority += 10;
+                            }
+                        }
+                        else if(board.get_cell_color(i-1, j) == color){
+                            if(board.get_capacity(i, j)-board.get_orbs_num(i, j) <= board.get_capacity(i-1, j)-board.get_orbs_num(i-1, j)){
+                                B[i][j].priority += 3;
+                            }
+                        }
+                    }
+                    if(i+1 < 5){
+                        if(board.get_cell_color(i+1, j) != color && board.get_cell_color(i+1, j) != 'w'){
+                            if(board.get_capacity(i, j)-board.get_orbs_num(i, j) <= board.get_capacity(i+1, j)-board.get_orbs_num(i+1, j)){
+                                B[i][j].priority += 10;
+                            }
+                        }
+                        else if(board.get_cell_color(i+1, j) == color){
+                            if(board.get_capacity(i, j)-board.get_orbs_num(i, j) <= board.get_capacity(i+1, j)-board.get_orbs_num(i+1, j)){
+                                B[i][j].priority += 3;
+                            }
+                        }
+                    }
             }
             else{
                 B[i][j].priority = -1;
             }
         }
     }
+
     for(int i = 0; i < 5; i ++){
         for(int j = 0; j < 6; j++){
             cout<<B[i][j].priority<<" ";
