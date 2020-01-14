@@ -131,12 +131,6 @@ void algorithm_A(Board board, Player player, int index[]){
         }
     }
 
-    for(int i = 0; i < 5; i ++){
-        for(int j = 0; j < 6; j++){
-            cout<<B[i][j].priority<<" ";
-        }
-        cout<<endl;
-    }
     int top = 0;
     int same = 1;
     for(int i = 0; i < 5; i++){
@@ -144,15 +138,12 @@ void algorithm_A(Board board, Player player, int index[]){
             if(B[i][j].priority > top){
                 top = B[i][j].priority;
                 same = 1;
-                cout<<"top = "<<top<<endl;
             }
             else if(B[i][j].priority == top){
                 same += 1;
-                cout<<"i = "<<i<<" j = "<<j<<endl;
             }
         }
     }
-    cout<<"same = "<<same<<endl;
     block Max[same];
     int k = 0;
     for(int i = 0; i < 5; i++){
@@ -162,9 +153,6 @@ void algorithm_A(Board board, Player player, int index[]){
                 k+=1;
             }
         }
-    }
-    for(int i = 0; i < same; i++){
-        cout<<"("<<Max[i].pos_x<<" "<<Max[i].pos_y<<")"<<endl;
     }
     block Final;
     srand(time(NULL)*time(NULL));
